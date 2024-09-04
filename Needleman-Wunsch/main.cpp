@@ -32,7 +32,7 @@ int contarRupturas(const string& secuenciaAlineada) {
 }
 
 // Función para alinear dos secuencias usando Needleman-Wunsch
-pair<string, string> alineacionNeedlemanWunsch(const string& secuencia1, const string& secuencia2, int coincidencia, int desajuste, int gap, int& puntaje) {
+pair<string, string> alineacionNeedlemanWunsch(const string& secuencia1, const string& secuencia2, int coincidencia, int diferente, int gap, int& puntaje) {
     int n = secuencia1.length();
     int m = secuencia2.length();
 
@@ -50,7 +50,7 @@ pair<string, string> alineacionNeedlemanWunsch(const string& secuencia1, const s
     // Rellenar la matriz
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= m; j++) {
-            int puntajeDiagonal = matrizPuntaje[i - 1][j - 1] + (secuencia1[i - 1] == secuencia2[j - 1] ? coincidencia : desajuste);
+            int puntajeDiagonal = matrizPuntaje[i - 1][j - 1] + (secuencia1[i - 1] == secuencia2[j - 1] ? coincidencia : diferente);
             int puntajeIzquierda = matrizPuntaje[i][j - 1] + gap;
             int puntajeArriba = matrizPuntaje[i - 1][j] + gap;
             matrizPuntaje[i][j] = maximo(puntajeDiagonal, puntajeIzquierda, puntajeArriba);
@@ -62,7 +62,7 @@ pair<string, string> alineacionNeedlemanWunsch(const string& secuencia1, const s
     int i = n, j = m;
 
     while (i > 0 || j > 0) {
-        if (i > 0 && j > 0 && matrizPuntaje[i][j] == matrizPuntaje[i - 1][j - 1] + (secuencia1[i - 1] == secuencia2[j - 1] ? coincidencia : desajuste)) {
+        if (i > 0 && j > 0 && matrizPuntaje[i][j] == matrizPuntaje[i - 1][j - 1] + (secuencia1[i - 1] == secuencia2[j - 1] ? coincidencia : diferente)) {
             secuenciaAlineada1 = secuencia1[i - 1] + secuenciaAlineada1;
             secuenciaAlineada2 = secuencia2[j - 1] + secuenciaAlineada2;
             i--;
@@ -99,7 +99,7 @@ string limpiarSecuencia(const string& linea) {
 }
 
 // Función para mostrar el alineamiento con menos rupturas
-void mostrarAlineacionConMenosRupturas(const vector<string>& secuencias, int coincidencia, int desajuste, int gap) {
+void mostrarAlineacionConMenosRupturas(const vector<string>& secuencias, int coincidencia, int diferente, int gap) {
     if (secuencias.size() < 3) {
         cout << "Se necesitan al menos 3 secuencias para realizar esta operación." << endl;
         return;
@@ -107,17 +107,17 @@ void mostrarAlineacionConMenosRupturas(const vector<string>& secuencias, int coi
 
     // Comparar secuencia 1 con secuencia 2
     int puntaje1_2;
-    auto alineacion1_2 = alineacionNeedlemanWunsch(secuencias[0], secuencias[1], coincidencia, desajuste, gap, puntaje1_2);
+    auto alineacion1_2 = alineacionNeedlemanWunsch(secuencias[0], secuencias[1], coincidencia, diferente, gap, puntaje1_2);
     int rupturas1_2 = contarRupturas(alineacion1_2.first) + contarRupturas(alineacion1_2.second);
 
     // Comparar secuencia 1 con secuencia 3
     int puntaje1_3;
-    auto alineacion1_3 = alineacionNeedlemanWunsch(secuencias[0], secuencias[2], coincidencia, desajuste, gap, puntaje1_3);
+    auto alineacion1_3 = alineacionNeedlemanWunsch(secuencias[0], secuencias[2], coincidencia, diferente, gap, puntaje1_3);
     int rupturas1_3 = contarRupturas(alineacion1_3.first) + contarRupturas(alineacion1_3.second);
 
     // Comparar secuencia 2 con secuencia 3
     int puntaje2_3;
-    auto alineacion2_3 = alineacionNeedlemanWunsch(secuencias[1], secuencias[2], coincidencia, desajuste, gap, puntaje2_3);
+    auto alineacion2_3 = alineacionNeedlemanWunsch(secuencias[1], secuencias[2], coincidencia, diferente, gap, puntaje2_3);
     int rupturas2_3 = contarRupturas(alineacion2_3.first) + contarRupturas(alineacion2_3.second);
 
     // Mostrar los resultados
@@ -138,11 +138,11 @@ void mostrarAlineacionConMenosRupturas(const vector<string>& secuencias, int coi
 }
 
 // Función para mostrar las comparaciones de secuencias
-void mostrarComparacionesSecuencias(const vector<string>& secuencias, int coincidencia, int desajuste, int gap) {
+void mostrarComparacionesSecuencias(const vector<string>& secuencias, int coincidencia, int diferente, int gap) {
     for (size_t i = 0; i < secuencias.size(); i++) {
         for (size_t j = i + 1; j < secuencias.size(); j++) {
             int puntaje;
-            auto alineacion = alineacionNeedlemanWunsch(secuencias[i], secuencias[j], coincidencia, desajuste, gap, puntaje);
+            auto alineacion = alineacionNeedlemanWunsch(secuencias[i], secuencias[j], coincidencia, diferente, gap, puntaje);
             cout << "[Mejor combinación para la secuencia " << i + 1 << "]: " << alineacion.first << endl;
             cout << "[Mejor combinación para la secuencia " << j + 1 << "]: " << alineacion.second << endl;
             cout << "Puntaje obtenido: " << puntaje << endl;
@@ -152,22 +152,22 @@ void mostrarComparacionesSecuencias(const vector<string>& secuencias, int coinci
 }
 
 // Función para mostrar solo los puntajes de las comparaciones
-void mostrarSoloPuntajes(const vector<string>& secuencias, int coincidencia, int desajuste, int gap) {
+void mostrarSoloPuntajes(const vector<string>& secuencias, int coincidencia, int diferente, int gap) {
     for (size_t i = 0; i < secuencias.size(); i++) {
         for (size_t j = i + 1; j < secuencias.size(); j++) {
             int puntaje;
-            alineacionNeedlemanWunsch(secuencias[i], secuencias[j], coincidencia, desajuste, gap, puntaje);
+            alineacionNeedlemanWunsch(secuencias[i], secuencias[j], coincidencia, diferente, gap, puntaje);
             cout << "Puntaje para la comparación de la secuencia " << i + 1 << " y la secuencia " << j + 1 << ": " << puntaje << endl;
         }
     }
 }
 
 // Función para comparar secuencias específicas (AAAC y AGC)
-void compararSecuenciasEspecificas(int coincidencia, int desajuste, int gap) {
+void compararSecuenciasEspecificas(int coincidencia, int diferente, int gap) {
     string secuencia1 = "AAAC";
     string secuencia2 = "AGC";
     int puntaje;
-    auto alineacion = alineacionNeedlemanWunsch(secuencia1, secuencia2, coincidencia, desajuste, gap, puntaje);
+    auto alineacion = alineacionNeedlemanWunsch(secuencia1, secuencia2, coincidencia, diferente, gap, puntaje);
     cout << "[Mejor combinación para la secuencia " << secuencia1 << "]: " << alineacion.first << endl;
     cout << "[Mejor combinación para la secuencia " << secuencia2 << "]: " << alineacion.second << endl;
     cout << "Puntaje obtenido: " << puntaje << endl;
@@ -206,7 +206,7 @@ int main() {
 
     // Parámetros de puntuación
     int coincidencia = 1;
-    int desajuste = -1;
+    int diferente = -1;
     int gap = -2;
 
     int opcion;
@@ -223,16 +223,16 @@ int main() {
 
         switch (opcion) {
         case 1:
-            mostrarComparacionesSecuencias(secuencias, coincidencia, desajuste, gap);
+            mostrarComparacionesSecuencias(secuencias, coincidencia, diferente, gap);
             break;
         case 2:
-            mostrarSoloPuntajes(secuencias, coincidencia, desajuste, gap);
+            mostrarSoloPuntajes(secuencias, coincidencia, diferente, gap);
             break;
         case 3:
-            compararSecuenciasEspecificas(coincidencia, desajuste, gap);
+            compararSecuenciasEspecificas(coincidencia, diferente, gap);
             break;
         case 4:
-            mostrarAlineacionConMenosRupturas(secuencias, coincidencia, desajuste, gap);
+            mostrarAlineacionConMenosRupturas(secuencias, coincidencia, diferente, gap);
             break;
         case 5:
             cout << "Saliendo..." << endl;
