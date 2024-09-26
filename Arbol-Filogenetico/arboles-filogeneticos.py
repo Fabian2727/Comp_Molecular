@@ -27,7 +27,7 @@ def hamming_distance(seq1, seq2):
     differences = sum(1 for i in range(length) if seq1[i] != seq2[i])
     return differences, length
 
-# Función para calcular la matriz de distancias corregida usando Jukes-Cantor
+# Función para calcular la matriz de distancias corregida usando Ecuación 1
 def calculate_distance_matrix(sequences):
     keys = list(sequences.keys())
     n = len(keys)
