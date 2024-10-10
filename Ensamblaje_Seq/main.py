@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-# Función para calcular el solapamiento más largo entre dos secuencias con un linkage t
+# Función para calcular el overlap más largo entre dos seq con un linkage t
 def overlap(s1, s2, min_length):
     start = 0
     max_overlap = 0
@@ -15,7 +15,7 @@ def overlap(s1, s2, min_length):
         start += 1
     return max_overlap
 
-# Función para obtener el complemento reverso de una secuencia de ADN
+# Función para obtener el complemento reverso de una seq de ADN
 def reverse_complement(seq):
     complement = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
     reversed_seq = seq[::-1]  # Invertir la secuencia
@@ -23,21 +23,21 @@ def reverse_complement(seq):
     return reverse_complement_seq
 
 def calculate_consensus_sequence(sequences, target_length=55):
-    # Crear una lista para almacenar las secuencias originales y sus complementos reversos
+    # Crear una lista para almacenar las seq originales y sus complementos reversos
     sequences_with_complement = []
     
     for seq in sequences:
-        sequences_with_complement.append(seq)  # Añadir la secuencia original
+        sequences_with_complement.append(seq)  # Añadir la seq original
         reverse_complement_seq = reverse_complement(seq)  # Obtener complemento reverso
         sequences_with_complement.append(reverse_complement_seq)  # Añadir complemento reverso
     
-    max_length = max(len(seq) for seq in sequences_with_complement)  # Obtener la longitud máxima de las secuencias
+    max_length = max(len(seq) for seq in sequences_with_complement)  # Obtener la longitud máxima de las seq
     consensus = ""
     
-    for i in range(min(max_length, target_length)):  # Limitar al tamaño objetivo (55 nucleótidos)
+    for i in range(min(max_length, target_length)):  # Limitar al tamaño objetivo (55 nucleótidos segun el ejercicio)
         bases = []
         for seq in sequences_with_complement:
-            if i < len(seq):  # Solo añadir bases si el índice es válido para la secuencia
+            if i < len(seq):  # Solo añadir bases si el índice es válido para la seq
                 bases.append(seq[i])
         
         if bases:  # Verificar que haya bases disponibles para este índice
@@ -96,7 +96,7 @@ def hamiltonian_superstring(sequences, t):
     plt.title("Grafo de Solapamientos entre Secuencias")
     plt.show()
 
-    # Construir la supercadena final
+    # Construir el superstring final
     final_sequence = sequences[selected_edges[0][0]]
     for u, v in selected_edges:
         overlap_len = overlap(sequences[u], sequences[v], t)
@@ -104,7 +104,7 @@ def hamiltonian_superstring(sequences, t):
     
     return final_sequence
 
-# Función principal para mostrar el menú
+
 def main_menu():
     
     sequences2 = ["AGTATTGGCAATC", 
@@ -148,7 +148,7 @@ def main_menu():
             print("\nSecuencias de Entrada:")
             for seq in sequences2:
                 print(seq)
-            final_consensus_sequence = hamiltonian_superstring(sequences2, t)  # Cambio aquí
+            final_consensus_sequence = hamiltonian_superstring(sequences2, t)
             print("\nSecuencia Consenso Final:", final_consensus_sequence)
         
         elif choice == '3':
