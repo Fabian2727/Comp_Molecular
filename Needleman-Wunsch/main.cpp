@@ -6,12 +6,12 @@
 
 using namespace std;
 
-// Función para calcular el máximo de tres números
+// Calcular el máximo de tres números
 int maximo(int a, int b, int c) {
     return max(max(a, b), c);
 }
 
-// Función para contar el número de rupturas en una secuencia alineada
+// Contar el número de rupturas en una secuencia alineada
 int contarRupturas(const string& secuenciaAlineada) {
     int rupturas = 0;
     bool enBloqueGuiones = false;
@@ -31,7 +31,7 @@ int contarRupturas(const string& secuenciaAlineada) {
     return rupturas;
 }
 
-// Función para alinear dos secuencias usando Needleman-Wunsch
+// Alinear dos secuencias usando Needleman-Wunsch
 pair<string, string> alineacionNeedlemanWunsch(const string& secuencia1, const string& secuencia2, int coincidencia, int diferente, int gap, int& puntaje) {
     int n = secuencia1.length();
     int m = secuencia2.length();
@@ -87,7 +87,7 @@ pair<string, string> alineacionNeedlemanWunsch(const string& secuencia1, const s
     return { secuenciaAlineada1, secuenciaAlineada2 };
 }
 
-// Función para limpiar una línea de secuencia
+// Limpiar una línea de secuencia
 string limpiarSecuencia(const string& linea) {
     string secuenciaLimpia;
     for (char c : linea) {
@@ -98,7 +98,7 @@ string limpiarSecuencia(const string& linea) {
     return secuenciaLimpia;
 }
 
-// Función para mostrar el alineamiento con menos rupturas
+// Mostrar el alineamiento con menos rupturas
 void mostrarAlineacionConMenosRupturas(const vector<string>& secuencias, int coincidencia, int diferente, int gap) {
     if (secuencias.size() < 3) {
         cout << "Se necesitan al menos 3 secuencias para realizar esta operación." << endl;
@@ -137,7 +137,7 @@ void mostrarAlineacionConMenosRupturas(const vector<string>& secuencias, int coi
     cout << "Número de rupturas: " << rupturas2_3 << endl;
 }
 
-// Función para mostrar las comparaciones de secuencias
+// Mostrar las comparaciones de secuencias
 void mostrarComparacionesSecuencias(const vector<string>& secuencias, int coincidencia, int diferente, int gap) {
     for (size_t i = 0; i < secuencias.size(); i++) {
         for (size_t j = i + 1; j < secuencias.size(); j++) {
@@ -151,7 +151,7 @@ void mostrarComparacionesSecuencias(const vector<string>& secuencias, int coinci
     }
 }
 
-// Función para mostrar solo los puntajes de las comparaciones
+// Mostrar solo los puntajes de las comparaciones
 void mostrarSoloPuntajes(const vector<string>& secuencias, int coincidencia, int diferente, int gap) {
     for (size_t i = 0; i < secuencias.size(); i++) {
         for (size_t j = i + 1; j < secuencias.size(); j++) {
@@ -162,7 +162,7 @@ void mostrarSoloPuntajes(const vector<string>& secuencias, int coincidencia, int
     }
 }
 
-// Función para comparar secuencias específicas (AAAC y AGC)
+// Comparar secuencias específicas (AAAC y AGC)
 void compararSecuenciasEspecificas(int coincidencia, int diferente, int gap) {
     string secuencia1 = "AAAC";
     string secuencia2 = "AGC";
@@ -181,9 +181,9 @@ int main() {
     string secuenciaActual = "";
 
     if (archivo.is_open()) {
-        // Leer el archivo línea por línea
+        
         while (getline(archivo, linea)) {
-            // Ignorar líneas vacías y las que comienzan con números o nombres de secuencia
+            
             if (!linea.empty() && !isdigit(linea[0]) && !isalpha(linea[0])) {
                 secuenciaActual += limpiarSecuencia(linea);
             }
