@@ -1,7 +1,6 @@
 import numpy as np
 import math
 
-# Nuevas secuencias de prueba
 """sequences = {
     'S1': "ATTGCCATT",
     'S2': "ATGGCCATT",
@@ -37,7 +36,7 @@ def calculate_distance_matrix(sequences):
         for j in range(i + 1, n):
             diffs, length = hamming_distance(sequences[keys[i]], sequences[keys[j]])
             p = diffs / length
-            # Aplicamos la ecuación de tasa de sustitución corregida
+            # Aplicamos la ecuación de tasa de sustitución
             if p < 0.75:
                 dist = -0.75 * math.log(1 - (4/3) * p)
             else:
@@ -47,10 +46,10 @@ def calculate_distance_matrix(sequences):
 
     return dist_matrix, keys
 
-# Calculamos la matriz de distancias corregida
+# Calculamos la matriz de distancias
 dist_matrix, seq_keys = calculate_distance_matrix(sequences)
 
-# Imprime la matriz de distancias corregida
+# Imprime la matriz de distancias
 print("Matriz de distancias corregida:")
 print(dist_matrix)
 
@@ -73,25 +72,24 @@ def upgma(dist_matrix, keys):
         if to_merge is None:
             break
         
-        # Unimos los dos clusters
+        # Unir dos clusters
         i, j = to_merge
         new_cluster = clusters[i] + clusters[j]
         print(f"Uniendo {clusters[i]} y {clusters[j]} con distancia {min_dist}")
         del clusters[j]
         clusters[i] = new_cluster
 
-        # Actualizamos las alturas para las uniones
+        # Actualizar las alturas para las uniones
         heights[i] = min_dist / 2
 
-        # Actualizamos la matriz de distancias
+        # Actualizar la matriz de distancias
         for k in clusters:
             if k != i:
                 dist_matrix[i][k] = dist_matrix[k][i] = (dist_matrix[i][k] + dist_matrix[j][k]) / 2
         dist_matrix[i][i] = 0
     
     return clusters
-
-# Ejecutamos el algoritmo UPGMA
+    
 upgma_tree = upgma(dist_matrix, seq_keys)
 print("Árbol filogenético UPGMA:", upgma_tree)
 
@@ -127,6 +125,5 @@ def neighbor_joining(dist_matrix, keys):
     
     return clusters
 
-# Ejecutamos el algoritmo Neighbor Joining
 nj_tree = neighbor_joining(dist_matrix, seq_keys)
 print("Árbol filogenético Neighbor Joining:", nj_tree)
