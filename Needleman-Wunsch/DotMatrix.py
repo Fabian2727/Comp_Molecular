@@ -20,11 +20,11 @@ def plot_dot_matrix(matrix, label_x, label_y):
 
     plt.imshow(matrix, cmap=cmap, interpolation='nearest')
 
-    # Configurar etiquetas en los ejes X e Y, sin las secuencias, solo los nombres
-    plt.xticks([])  # Eliminar las etiquetas de las secuencias en el eje X
-    plt.yticks([])  # Eliminar las etiquetas de las secuencias en el eje Y
-    plt.xlabel(label_x)  # Etiqueta del eje X
-    plt.ylabel(label_y)  # Etiqueta del eje Y
+    # Configurar etiquetas en los ejes X e Y
+    plt.xticks([]) 
+    plt.yticks([])
+    plt.xlabel(label_x)  
+    plt.ylabel(label_y)  
     plt.title('Dot Matrix of Strings')
     plt.show()
 
